@@ -1,0 +1,107 @@
+market_data:
+  cache_duration: 3600
+  default_period: 3mo
+  update_frequency: 300
+# AI and Sentiment Configuration
+ai_scoring:
+  enabled: true
+  model_type: 'lightgbm'  # lightgbm, xgboost, ensemble
+  feature_weights:
+    rsi: 0.25
+    macd: 0.20
+    bollinger: 0.15
+    sentiment: 0.25
+    volume: 0.15
+  retrain_frequency: 'weekly'
+  
+# News Sentiment Analysis
+sentiment:
+  enabled: true
+  sources: ['newsapi', 'finnhub']  # newsapi, finnhub, reddit
+  lookback_hours: 24
+  min_articles: 3
+  sentiment_weight: 0.3
+  bullish_threshold: 0.1
+  bearish_threshold: -0.1
+  
+# Backtesting Configuration
+backtesting:
+  start_date: '2023-01-01'
+  end_date: '2024-12-31'
+  initial_capital: 100000
+  commission: 0.001
+  slippage: 0.001
+  benchmark: 'SPY'
+  
+# Simulation Mode
+simulation:
+  initial_balance: 100000
+  enable_slippage: true
+  enable_commission: true
+  reset_monthly: false
+  
+# Web Dashboard
+dashboard:
+  enabled: true
+  port: 8501
+  auto_refresh_seconds: 30
+  show_debug_info: false
+  
+# Reporting
+reporting:
+  generate_weekly_reports: true
+  report_format: 'pdf'  # pdf, html, console
+  email_reports: false
+  report_day: 'friday'
+  include_charts: true
+  
+notifications:
+  enabled_channels:
+  - console
+  - dashboard
+  high_priority_threshold: 0.7
+  send_entry_alerts: true
+  send_exit_alerts: true
+  send_risk_alerts: true
+  trade_completion_alerts: true
+trading:
+  # Core Technical Indicators
+  macd_fast: 12
+  macd_signal: 9
+  macd_slow: 26
+  max_daily_risk_pct: 0.02
+  max_position_size_pct: 0.1
+  max_trades_per_day: 10
+  min_risk_reward_ratio: 2.0
+  rsi_overbought: 70.0
+  rsi_oversold: 30.0
+  rsi_period: 14
+  stop_loss_pct: 0.05
+  take_profit_pct: 0.15
+  
+  # AI Trade Scoring
+  min_confidence_score: 0.6
+  high_confidence_threshold: 0.8
+  confidence_position_multiplier: 2.0
+  
+  # Dynamic Position Sizing
+  base_position_size_pct: 0.05
+  max_confidence_bonus_pct: 0.10
+  
+  # Portfolio Management
+  max_concurrent_trades: 5
+  portfolio_heat: 0.06  # Max 6% of portfolio at risk
+  correlation_threshold: 0.7  # Avoid highly correlated trades
+  
+  # Advanced Technical Indicators
+  ema_fast: 9
+  ema_slow: 21
+  atr_period: 14
+  atr_multiplier: 2.0
+  choppiness_period: 14
+  choppiness_threshold: 61.8
+  
+  # Multi-timeframe Analysis
+  primary_timeframe: '1d'
+  confirmation_timeframe: '5m'
+  enable_multi_timeframe: true

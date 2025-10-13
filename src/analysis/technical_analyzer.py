@@ -127,23 +127,31 @@ class TechnicalAnalyzer:
             return None
     
     def _generate_signal(self, rsi: float, macd: float, signal: float, histogram: float) -> tuple[str, float]:
-        """Generate buy/sell/hold signal with confidence score"""
+        """Generate buy/sell/hold signal with confidence score
+        
+        This is the CORE TRADING LOGIC where you can modify signal generation:
+        - RSI signals: Oversold (<30) = BUY, Overbought (>70) = SELL
+        - MACD signals: MACD above signal line = BUY, below = SELL
+        - Confidence scores determine trade strength
+        
+        CUSTOMIZE HERE: Change RSI thresholds, MACD logic, or add new indicators
+        """
         signals = []
         confidence_factors = []
         
-        # RSI signals
-        if rsi < 30:  # Oversold
+        # RSI signals - MODIFY THESE VALUES TO CHANGE RSI SENSITIVITY
+        if rsi < 30:  # Oversold threshold - LOWER VALUE = MORE AGGRESSIVE BUYING
             signals.append('buy')
-            confidence_factors.append(0.7)
-        elif rsi > 70:  # Overbought
+            confidence_factors.append(0.7)  # High confidence for RSI signals
+        elif rsi > 70:  # Overbought threshold - HIGHER VALUE = MORE AGGRESSIVE SELLING
             signals.append('sell')
             confidence_factors.append(0.7)
         
-        # MACD signals
-        if macd > signal and histogram > 0:  # Bullish crossover
+        # MACD signals - MODIFY THESE CONDITIONS FOR DIFFERENT MACD STRATEGIES
+        if macd > signal and histogram > 0:  # Bullish crossover with positive momentum
             signals.append('buy')
-            confidence_factors.append(0.6)
-        elif macd < signal and histogram < 0:  # Bearish crossover
+            confidence_factors.append(0.6)  # Medium confidence for MACD
+        elif macd < signal and histogram < 0:  # Bearish crossover with negative momentum
             signals.append('sell')
             confidence_factors.append(0.6)
         
@@ -255,17 +263,24 @@ class TechnicalAnalyzer:
         )
     
     def _create_crypto_opportunity(self, signal: TechnicalSignal) -> Optional[MarketOpportunity]:
-        """Create a crypto trading opportunity from technical signal"""
+        """Create a crypto trading opportunity from technical signal
+        
+        CRYPTO PROFIT TARGETS & STOP LOSSES - MODIFY THESE FOR DIFFERENT RISK/REWARD:
+        - BUY: 20% profit target, 10% stop loss (2:1 ratio)
+        - SELL: 20% profit target, 10% stop loss (2:1 ratio)
+        
+        CUSTOMIZE: Change multipliers below to adjust profit targets and risk
+        """
         if not signal.price:
             return None
         
         if signal.signal_type == 'buy':
-            target_price = signal.price * 1.20  # 20% target (crypto more volatile)
-            stop_loss = signal.price * 0.90     # 10% stop loss
+            target_price = signal.price * 1.20  # 20% profit target - INCREASE FOR MORE PROFIT
+            stop_loss = signal.price * 0.90     # 10% stop loss - DECREASE FOR TIGHTER STOPS
             strategy = "Crypto Momentum Buy"
         elif signal.signal_type == 'sell':
-            target_price = signal.price * 0.80  # 20% target (short)
-            stop_loss = signal.price * 1.10     # 10% stop loss
+            target_price = signal.price * 0.80  # 20% profit target (short) - DECREASE FOR MORE PROFIT
+            stop_loss = signal.price * 1.10     # 10% stop loss - INCREASE FOR TIGHTER STOPS
             strategy = "Crypto Momentum Sell"
         else:
             return None

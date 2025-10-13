@@ -46,9 +46,10 @@ class PortfolioManager:
     """Main portfolio and trade management engine"""
     
     def __init__(self):
-        self.max_position_size_pct = 0.10  # Max 10% of portfolio per trade
-        self.max_daily_risk_pct = 0.02     # Max 2% daily risk
-        self.min_risk_reward_ratio = 2.0   # Minimum 2:1 risk/reward
+        # RISK MANAGEMENT PARAMETERS - MODIFY THESE TO CHANGE TRADING AGGRESSIVENESS
+        self.max_position_size_pct = 0.10  # Max 10% of portfolio per trade - INCREASE FOR BIGGER POSITIONS
+        self.max_daily_risk_pct = 0.02     # Max 2% daily risk - INCREASE FOR MORE RISK
+        self.min_risk_reward_ratio = 2.0   # Minimum 2:1 risk/reward - DECREASE FOR MORE TRADES
         
     async def initialize(self):
         """Initialize the portfolio manager"""
@@ -103,18 +104,18 @@ class PortfolioManager:
         max_position = min(budget * self.max_position_size_pct, budget * 0.3)  # Max 30% for single stock
         
         # Calculate position sizing
-        risk_per_share = abs(opportunity.entry_price - opportunity.stop_loss)
-        max_shares = int(max_position / opportunity.entry_price)
+        risk_per_share = abs(opportunity["entry_price"] - opportunity["stop_loss"])
+        max_shares = int(max_position / opportunity["entry_price"])
         risk_adjusted_shares = int((max_position * 0.02) / risk_per_share)  # 2% max risk
         
-        position_shares = min(max_shares, risk_adjusted_shares, int(budget / opportunity.entry_price))
+        position_shares = min(max_shares, risk_adjusted_shares, int(budget / opportunity["entry_price"]))
         
         if position_shares <= 0:
             return suggestions
         
-        position_value = position_shares * opportunity.entry_price
+        position_value = position_shares * opportunity["entry_price"]
         max_risk = position_shares * risk_per_share
-        risk_reward = abs(opportunity.target_price - opportunity.entry_price) / risk_per_share
+        risk_reward = abs(opportunity.target_price - opportunity["entry_price"]) / risk_per_share
         
         # Stock position suggestion
         if opportunity.technical_signals[0].signal_type == 'buy':
@@ -123,16 +124,16 @@ class PortfolioManager:
             trade_type = 'stock_sell'
         
         stock_suggestion = TradeSuggestion(
-            symbol=opportunity.symbol,
+            symbol=opportunity["symbol"],
             trade_type=trade_type,
-            entry_price=opportunity.entry_price,
+            entry_price=opportunity["entry_price"],
             target_price=opportunity.target_price,
-            stop_loss=opportunity.stop_loss,
+            stop_loss=opportunity["stop_loss"],
             position_size=position_value,
             risk_reward_ratio=risk_reward,
             max_risk=max_risk,
             strategy=f"Stock {opportunity.strategy}",
-            confidence=opportunity.confidence_score
+            confidence=opportunity["confidence_score"]
         )
         
         if risk_reward >= self.min_risk_reward_ratio:
@@ -149,7 +150,7 @@ class PortfolioManager:
         """Create options trading suggestions"""
         suggestions = []
         signal = opportunity.technical_signals[0]
-        current_price = opportunity.entry_price
+        current_price = opportunity["entry_price"]
         
         # Calculate option parameters (simplified - would need real options data)
         days_to_expiry = 30  # Target 30 days
@@ -172,7 +173,7 @@ class PortfolioManager:
                     target_premium = option_premium * 3  # Target 200% gain
                     
                     suggestion = TradeSuggestion(
-                        symbol=opportunity.symbol,
+                        symbol=opportunity["symbol"],
                         trade_type='call_option',
                         entry_price=option_premium,
                         target_price=target_premium,
@@ -181,7 +182,7 @@ class PortfolioManager:
                         risk_reward_ratio=2.0,
                         max_risk=total_cost * 0.5,
                         strategy=f"Call Option {int((strike/current_price - 1) * 100)}% OTM",
-                        confidence=opportunity.confidence_score * 0.8,  # Lower confidence for options
+                        confidence=opportunity["confidence_score"] * 0.8,  # Lower confidence for options
                         expiration=expiry_date,
                         option_strike=strike,
                         option_expiry=f"{days_to_expiry}d"
@@ -204,7 +205,7 @@ class PortfolioManager:
                     target_premium = option_premium * 3
                     
                     suggestion = TradeSuggestion(
-                        symbol=opportunity.symbol,
+                        symbol=opportunity["symbol"],
                         trade_type='put_option',
                         entry_price=option_premium,
                         target_price=target_premium,
@@ -213,7 +214,7 @@ class PortfolioManager:
                         risk_reward_ratio=2.0,
                         max_risk=total_cost * 0.5,
                         strategy=f"Put Option {int((1 - strike/current_price) * 100)}% OTM",
-                        confidence=opportunity.confidence_score * 0.8,
+                        confidence=opportunity["confidence_score"] * 0.8,
                         expiration=expiry_date,
                         option_strike=strike,
                         option_expiry=f"{days_to_expiry}d"
@@ -239,12 +240,22 @@ class PortfolioManager:
     
     async def _create_crypto_suggestion(self, opportunity: MarketOpportunity, 
                                       budget: float, profit_goal: float) -> Optional[TradeSuggestion]:
-        """Create cryptocurrency trade suggestion"""
+        """Create cryptocurrency trade suggestion
+        
+        CRYPTO POSITION SIZING LOGIC - MODIFY FOR DIFFERENT ALLOCATION:
+        - Max 25% of budget per crypto trade (more volatile than stocks)
+        - 3% max risk per trade (higher than stocks due to volatility)
+        - Position size calculated based on stop loss distance
+        
+        CUSTOMIZE: Change percentages below to adjust crypto allocation
+        """
+        # CRYPTO ALLOCATION - Change 0.25 to increase/decrease max crypto position size
         max_position = min(budget * self.max_position_size_pct, budget * 0.25)  # Max 25% for single crypto
         
         # Calculate position sizing for crypto
-        risk_per_unit = abs(opportunity.entry_price - opportunity.stop_loss)
-        max_units = max_position / opportunity.entry_price
+        risk_per_unit = abs(opportunity["entry_price"] - opportunity["stop_loss"])
+        max_units = max_position / opportunity["entry_price"]
+        # CRYPTO RISK - Change 0.03 to increase/decrease risk per crypto trade
         risk_adjusted_units = (max_position * 0.03) / risk_per_unit  # 3% max risk for crypto (more volatile)
         
         position_units = min(max_units, risk_adjusted_units)
@@ -252,9 +263,9 @@ class PortfolioManager:
         if position_units <= 0:
             return None
         
-        position_value = position_units * opportunity.entry_price
+        position_value = position_units * opportunity["entry_price"]
         max_risk = position_units * risk_per_unit
-        risk_reward = abs(opportunity.target_price - opportunity.entry_price) / risk_per_unit
+        risk_reward = abs(opportunity["target_price"] - opportunity["entry_price"]) / risk_per_unit
         
         if opportunity.technical_signals[0].signal_type == 'buy':
             trade_type = 'crypto_buy'
@@ -262,16 +273,16 @@ class PortfolioManager:
             trade_type = 'crypto_sell'
         
         return TradeSuggestion(
-            symbol=opportunity.symbol,
+            symbol=opportunity["symbol"],
             trade_type=trade_type,
-            entry_price=opportunity.entry_price,
-            target_price=opportunity.target_price,
-            stop_loss=opportunity.stop_loss,
+            entry_price=opportunity["entry_price"],
+            target_price=opportunity["target_price"],
+            stop_loss=opportunity["stop_loss"],
             position_size=position_value,
             risk_reward_ratio=risk_reward,
             max_risk=max_risk,
             strategy=f"Crypto {opportunity.strategy}",
-            confidence=opportunity.confidence_score
+            confidence=opportunity["confidence_score"]
         )
     
     def calculate_portfolio_risk(self, suggestions: List[TradeSuggestion]) -> Dict[str, float]:
