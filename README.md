@@ -151,8 +151,10 @@ Get your free Alpaca API keys at [alpaca.markets](https://alpaca.markets/)
 
 ```bash
 python3 run_bot.py --mode dashboard
-# Open http://localhost:5000
 ```
+
+Visit the bot locally at:  
+`http://127.0.0.1:5000`
 
 ### 4. **Run the Bot** (Live Trading)
 
@@ -160,6 +162,19 @@ python3 run_bot.py --mode dashboard
 python3 run_bot.py --mode bot
 # Bot will automatically scan and execute trades
 ```
+
+---
+
+## 🧪 Usage
+
+### Dashboard  
+Monitor performance, P&L, and current holdings.
+
+### Trade History  
+View all past trades with timestamps + results.
+
+### Configuration  
+Tune your strategy, risk, and capital allocation live.
 
 ---
 
@@ -207,6 +222,28 @@ All settings can also be modified through the web dashboard.
 
 ---
 
+## 👨‍💻 My Role & Contributions
+
+I built:
+
+✔ Algorithmic trading logic (RSI + volume + optional MACD)  
+✔ Stop-loss, take-profit, and trailing stop engine  
+✔ Capital allocation system  
+✔ Flask-based UI with dashboard + settings  
+✔ Trade history engine  
+✔ User configuration system  
+✔ All code written or refined using AI-assisted workflows (ChatGPT + Warp)  
+
+This project demonstrates:  
+- Algorithmic trading systems  
+- Python automation  
+- Flask full-stack development  
+- Risk management engineering  
+- Real-time UI building  
+- Practical AI-assisted coding  
+
+---
+
 ## 🎓 Built With AI Assistance
 
 This project was developed using:
@@ -215,6 +252,17 @@ This project was developed using:
 - **GitHub Copilot** for code completion
 
 It demonstrates how AI tools can accelerate development of complex trading systems while maintaining production-quality code.
+
+---
+
+## 🔮 Future Enhancements
+
+- Live exchange integration  
+- Machine learning entry/exit predictions  
+- Multi-asset scanning  
+- Email/SMS alerts  
+- Backtesting mode  
+- Candle + RSI chart visualizations  
 
 ---
 
@@ -230,6 +278,6 @@ For questions or issues:
 
 ## 📄 License
 
-MIT License - feel free to use and modify for your own projects.
+This project is for educational and portfolio purposes.
 
 **Built by [@Elliott1985](https://github.com/Elliott1985) with AI assistance**
