@@ -1,6 +1,6 @@
-# 🤖 Autonomous Trading AI - Enhanced System
+# 🤖 RSI Trading Bot - Alpaca Integration
 
-**An AI-powered trading bot with sentiment analysis, advanced technical indicators, and intelligent trade scoring.**
+**An AI-powered trading bot using Alpaca API with RSI strategies, sentiment analysis, advanced technical indicators, and intelligent trade scoring.**
 
 ![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -65,10 +65,9 @@ REDDIT_CLIENT_ID=your_reddit_client_id
 REDDIT_CLIENT_SECRET=your_reddit_client_secret
 
 # Broker APIs (for live trading)
-ETRADE_CONSUMER_KEY=your_etrade_consumer_key
-ETRADE_CONSUMER_SECRET=your_etrade_consumer_secret
-CRYPTO_COM_API_KEY=your_crypto_com_api_key
-CRYPTO_COM_SECRET_KEY=your_crypto_com_secret_key
+ALPACA_API_KEY=your_alpaca_api_key
+ALPACA_SECRET_KEY=your_alpaca_secret_key
+ALPACA_BASE_URL=https://paper-api.alpaca.markets  # Use https://api.alpaca.markets for live
 
 # System Configuration
 SIMULATION_MODE=true  # Set to false for live trading
@@ -122,9 +121,8 @@ advanced_indicators:
 - **NewsAPI**: [Get free key](https://newsapi.org/) (1000 articles/day)
 - **Finnhub**: [Get free key](https://finnhub.io/) (60 calls/minute)
 
-#### **Broker APIs (For Live Trading)**
-- **E*TRADE**: [Developer Platform](https://developer.etrade.com/)
-- **Crypto.com**: [Exchange API](https://exchange-docs.crypto.com/exchange/v1/rest-ws/index.html)
+#### **Broker API (For Live Trading)**
+- **Alpaca**: [Get API keys](https://alpaca.markets/) - Commission-free trading with paper trading support
 
 ---
 
@@ -262,50 +260,33 @@ dashboard:
 
 ## 🔌 **Broker Integration**
 
-### **E*TRADE Setup**
+### **Alpaca Setup**
 
-1. **Create E*TRADE Developer Account**
-   - Visit [E*TRADE Developer](https://developer.etrade.com/)
-   - Apply for API access (paper trading account recommended)
+1. **Create Alpaca Account**
+   - Visit [Alpaca](https://alpaca.markets/) and sign up
+   - Free account with paper trading included
+   - No minimum deposit required for paper trading
 
-2. **Configure API Keys**
+2. **Get API Keys**
+   - Log in to Alpaca dashboard
+   - Navigate to "Paper Trading" section
+   - Generate API Key and Secret Key
+   - Copy both keys (you'll need them for configuration)
+
+3. **Configure API Keys**
    ```env
-   ETRADE_CONSUMER_KEY=your_consumer_key
-   ETRADE_CONSUMER_SECRET=your_consumer_secret
-   ETRADE_SANDBOX=true  # false for live trading
+   ALPACA_API_KEY=your_api_key_here
+   ALPACA_SECRET_KEY=your_secret_key_here
+   ALPACA_BASE_URL=https://paper-api.alpaca.markets  # Paper trading
+   # For live trading: ALPACA_BASE_URL=https://api.alpaca.markets
    ```
 
-3. **Authentication Flow**
-   ```python
-   # The system handles OAuth authentication automatically
-   # Follow prompts to authorize trading permissions
-   ```
-
-### **Crypto.com Integration**
-
-1. **Create Crypto.com Account**
-   - Visit [Crypto.com](https://crypto.com/) and create an account
-   - Complete KYC verification for API access
-   - Navigate to Advanced Trading platform
-
-2. **Generate API Keys**
-   ```bash
-   # In Crypto.com Advanced Trading:
-   # Settings > API Management > Create API Key
-   # Enable trading permissions for automated trading
-   ```
-
-3. **Configure Crypto Trading**
-   ```env
-   CRYPTO_COM_API_KEY=your_api_key
-   CRYPTO_COM_SECRET_KEY=your_secret_key
-   CRYPTO_COM_SANDBOX=true  # for testing
-   ```
-
-4. **Supported Cryptocurrencies**
-   - Bitcoin (BTC), Ethereum (ETH), major altcoins
-   - All USD trading pairs supported
-   - Real-time market data and execution
+4. **Features**
+   - Commission-free stock trading
+   - Real-time market data
+   - Paper trading environment for testing
+   - REST API and WebSocket streams
+   - Support for market, limit, stop, and bracket orders
 
 ---
 
@@ -619,7 +600,8 @@ autonomous-trading-ai/
 
 ### **Feature Requests**
 - Advanced ML models (LSTM, Transformer)  
-- Additional brokers (Interactive Brokers, TD Ameritrade)
+- Additional brokers (Interactive Brokers, TD Ameritrade, E*TRADE)
+- Cryptocurrency trading support
 - More technical indicators and strategies
 - Mobile app/notifications
 - Cloud deployment options
