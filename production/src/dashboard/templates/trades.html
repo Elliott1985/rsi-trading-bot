@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade History - Trading Bot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .nav {
+            background: white;
+            padding: 0 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #4a5568;
+            padding: 1rem 0;
+            display: block;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .table tr:hover {
+            background: #f7fafc;
+        }
+        
+        .positive { color: #38a169; }
+        .negative { color: #e53e3e; }
+        
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🤖 Autonomous Trading Bot</h1>
+    </header>
+    
+    <nav class="nav">
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/trades" class="active">Trade History</a></li>
+            <li><a href="/config">Configuration</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="card">
+            <h2>📋 Trade History</h2>
+            
+            {% if trades %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Symbol</th>
+                        <th>Action</th>
+                        <th>Quantity</th>
+                        <th>Entry Price</th>
+                        <th>Exit Price</th>
+                        <th>P&L</th>
+                        <th>Duration</th>
+                        <th>Exit Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trade in trades %}
+                    <tr>
+                        <td>{{ trade.timestamp }}</td>
+                        <td><strong>{{ trade.symbol }}</strong></td>
+                        <td>{{ trade.action }}</td>
+                        <td>{{ trade.quantity }}</td>
+                        <td>${{ "%.2f"|format(trade.entry_price|float) }}</td>
+                        <td>${{ "%.2f"|format(trade.exit_price|float) }}</td>
+                        <td class="{{ 'positive' if trade.pnl >= 0 else 'negative' }}">
+                            ${{ "%.2f"|format(trade.pnl|float) }}
+                        </td>
+                        <td>{{ trade.duration_minutes }}m</td>
+                        <td>{{ trade.exit_reason }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <p>📊 No trades executed yet.</p>
+                <p>Trade history will appear here once the bot starts trading.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

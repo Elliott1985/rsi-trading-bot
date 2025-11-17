@@ -1,0 +1,50 @@
+{
+  "alpaca_key": "AKFGTRT26CUHQKQEOHDRKK3TOV",
+  "alpaca_secret": "DqsBKDniGneGMHPLNjrjaA9YSrxvq4XZCg5hQswpLMRX",
+  "alpaca_base_url": "https://api.alpaca.markets",
+  
+  "trading_config": {
+    "symbols": ["AMD", "SOL/USD"],
+    "max_positions": 2,
+    "capital_use_percentage": 100.0,
+    "stop_loss_percent": 3.0,
+    "take_profit_percent": 8.0,
+    "crypto_stop_loss_percent": 5.0,
+    "crypto_take_profit_percent": 12.0,
+    "min_confidence": 0.50,
+    "max_daily_trades": 10,
+    "min_trade_amount": 10.0
+  },
+  
+  "twilio_account_sid": "YOUR_TWILIO_ACCOUNT_SID",
+  "twilio_auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+  "twilio_phone_number": "YOUR_TWILIO_PHONE_NUMBER",
+  "notification_phone_number": "YOUR_PHONE_NUMBER",
+  
+  "news_api_key": "YOUR_NEWS_API_KEY",
+  
+  "bot_control": {
+    "enabled": true,
+    "scan_interval_seconds": 30,
+    "auto_start": true
+  },
+  
+  "database": {
+    "trades_db_path": "data/trades.db",
+    "performance_db_path": "data/performance.db"
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "log_file": "enhanced_bot.log",
+    "max_log_size": "10MB",
+    "backup_count": 5
+  },
+  
+  "market_hours": {
+    "timezone": "US/Eastern",
+    "stock_open": "09:30",
+    "stock_close": "16:00",
+    "crypto_24_7": true
+  }
+}

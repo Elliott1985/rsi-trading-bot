@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Trading Bot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .nav {
+            background: white;
+            padding: 0 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #4a5568;
+            padding: 1rem 0;
+            display: block;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .positive { color: #38a169; }
+        .negative { color: #e53e3e; }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .table tr:hover {
+            background: #f7fafc;
+        }
+        
+        .status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .status.active {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status.filled {
+            background: #bee3f8;
+            color: #2a4365;
+        }
+        
+        .status.pending {
+            background: #feebc8;
+            color: #c05621;
+        }
+        
+        .status.cancelled {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🤖 Autonomous Trading Bot</h1>
+    </header>
+    
+    <nav class="nav">
+        <ul>
+            <li><a href="/" class="active">Dashboard</a></li>
+            <li><a href="/trades">Trade History</a></li>
+            <li><a href="/config">Configuration</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Portfolio Summary -->
+        <div class="card full-width">
+            <h2>📊 Portfolio Summary</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <h3>Portfolio Value</h3>
+                    <div class="value">${{ "%.2f"|format(portfolio.value|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Buying Power</h3>
+                    <div class="value">${{ "%.2f"|format(portfolio.buying_power|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Cash</h3>
+                    <div class="value">${{ "%.2f"|format(portfolio.cash|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Day Trading Power</h3>
+                    <div class="value">${{ "%.2f"|format(portfolio.day_trading_power|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Account Status</h3>
+                    <div class="value">
+                        <span class="status active">{{ portfolio.status }}</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unrealized P&L</h3>
+                    <div class="value {{ 'positive' if total_unrealized_pl >= 0 else 'negative' }}">
+                        ${{ "%.2f"|format(total_unrealized_pl|float) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Metrics -->
+        {% if performance %}
+        <div class="card">
+            <h2>📈 Performance Metrics</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <h3>Total Trades</h3>
+                    <div class="value">{{ performance.total_trades }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Win Rate</h3>
+                    <div class="value">{{ "%.1f"|format(performance.win_rate|float) }}%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total P&L</h3>
+                    <div class="value {{ 'positive' if performance.total_pnl >= 0 else 'negative' }}">
+                        ${{ "%.2f"|format(performance.total_pnl|float) }}
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Profit Factor</h3>
+                    <div class="value">{{ "%.2f"|format(performance.profit_factor|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Sharpe Ratio</h3>
+                    <div class="value">{{ "%.2f"|format(performance.sharpe_ratio|float) }}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Max Drawdown</h3>
+                    <div class="value negative">${{ "%.2f"|format(performance.max_drawdown|float) }}</div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <h2>📈 Performance Metrics</h2>
+            <p>No trading history available yet.</p>
+        </div>
+        {% endif %}
+        
+        <!-- Current Positions -->
+        <div class="card">
+            <h2>💼 Current Positions</h2>
+            {% if positions %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Market Value</th>
+                        <th>Unrealized P&L</th>
+                        <th>% Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for position in positions %}
+                    <tr>
+                        <td><strong>{{ position.symbol }}</strong></td>
+                        <td>{{ position.qty }}</td>
+                        <td>${{ "%.2f"|format(position.market_value|float) }}</td>
+                        <td class="{{ 'positive' if position.unrealized_pl >= 0 else 'negative' }}">
+                            ${{ "%.2f"|format(position.unrealized_pl|float) }}
+                        </td>
+                        <td class="{{ 'positive' if position.unrealized_plpc >= 0 else 'negative' }}">
+                            {{ "%.2f"|format(position.unrealized_plpc|float) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No open positions.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Recent Orders -->
+        <div class="card">
+            <h2>📋 Recent Orders</h2>
+            {% if orders %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td><strong>{{ order.symbol }}</strong></td>
+                        <td>{{ order.side.upper() }}</td>
+                        <td>{{ order.qty }}</td>
+                        <td>
+                            <span class="status {{ order.status.lower() }}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td>{{ order.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No recent orders.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        // Auto-refresh data every 30 seconds
+        setInterval(function() {
+            location.reload();
+        }, 30000);
+        
+        // Add real-time updates via AJAX
+        function updateDashboard() {
+            fetch('/api/account')
+                .then(response => response.json())
+                .then(data => {
+                    // Update portfolio values
+                    console.log('Account updated:', data);
+                })
+                .catch(error => console.error('Error updating dashboard:', error));
+        }
+        
+        // Update every 10 seconds
+        setInterval(updateDashboard, 10000);
+    </script>
+</body>
+</html>

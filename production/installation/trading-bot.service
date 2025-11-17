@@ -1,0 +1,17 @@
+[Unit]
+Description=Enhanced Autonomous Trading Bot
+After=network.target
+
+[Service]
+Type=simple
+User=homebase
+WorkingDirectory=/Users/homebase/projects/autonomous-trading-ai/production
+ExecStart=/usr/bin/python3 /Users/homebase/projects/autonomous-trading-ai/production/src/enhanced_bot.py
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+Environment="PYTHONPATH=/Users/homebase/projects/autonomous-trading-ai/production"
+
+[Install]
+WantedBy=multi-user.target

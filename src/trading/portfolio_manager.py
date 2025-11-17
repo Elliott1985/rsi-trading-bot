@@ -104,36 +104,44 @@ class PortfolioManager:
         max_position = min(budget * self.max_position_size_pct, budget * 0.3)  # Max 30% for single stock
         
         # Calculate position sizing
-        risk_per_share = abs(opportunity["entry_price"] - opportunity["stop_loss"])
-        max_shares = int(max_position / opportunity["entry_price"])
+        entry_price = opportunity.get("entry_price", opportunity.get("entry_price", 100.0))
+        stop_loss = opportunity.get("stop_loss", opportunity.get("stop_loss", entry_price * 0.95))
+        risk_per_share = abs(entry_price - stop_loss)
+        max_shares = int(max_position / entry_price)
         risk_adjusted_shares = int((max_position * 0.02) / risk_per_share)  # 2% max risk
         
-        position_shares = min(max_shares, risk_adjusted_shares, int(budget / opportunity["entry_price"]))
+        position_shares = min(max_shares, risk_adjusted_shares, int(budget / entry_price))
         
         if position_shares <= 0:
             return suggestions
         
-        position_value = position_shares * opportunity["entry_price"]
+        position_value = position_shares * entry_price
         max_risk = position_shares * risk_per_share
-        risk_reward = abs(opportunity.target_price - opportunity["entry_price"]) / risk_per_share
+        target_price = opportunity.get("target_price", entry_price * 1.1)
+        risk_reward = abs(target_price - entry_price) / risk_per_share
         
-        # Stock position suggestion
-        if opportunity.technical_signals[0].signal_type == 'buy':
-            trade_type = 'stock_buy'
-        else:
-            trade_type = 'stock_sell'
+        # Stock position suggestion - handle dict structure
+        symbol = opportunity.get("symbol", "UNKNOWN")
+        strategy = opportunity.get("strategy", "Technical Analysis")
+        confidence = opportunity.get("confidence_score", opportunity.get("ai_score", 0.5))
+        
+        # Determine trade type from signals if available
+        trade_type = 'stock_buy'  # Default
+        if "technical_signals" in opportunity and opportunity["technical_signals"]:
+            if hasattr(opportunity["technical_signals"][0], 'signal_type'):
+                trade_type = 'stock_buy' if opportunity["technical_signals"][0].signal_type == 'buy' else 'stock_sell'
         
         stock_suggestion = TradeSuggestion(
-            symbol=opportunity["symbol"],
+            symbol=symbol,
             trade_type=trade_type,
-            entry_price=opportunity["entry_price"],
-            target_price=opportunity.target_price,
-            stop_loss=opportunity["stop_loss"],
+            entry_price=entry_price,
+            target_price=target_price,
+            stop_loss=stop_loss,
             position_size=position_value,
             risk_reward_ratio=risk_reward,
             max_risk=max_risk,
-            strategy=f"Stock {opportunity.strategy}",
-            confidence=opportunity["confidence_score"]
+            strategy=f"Stock {strategy}",
+            confidence=confidence
         )
         
         if risk_reward >= self.min_risk_reward_ratio:
@@ -253,8 +261,12 @@ class PortfolioManager:
         max_position = min(budget * self.max_position_size_pct, budget * 0.25)  # Max 25% for single crypto
         
         # Calculate position sizing for crypto
-        risk_per_unit = abs(opportunity["entry_price"] - opportunity["stop_loss"])
-        max_units = max_position / opportunity["entry_price"]
+        entry_price = opportunity.get("entry_price", 50000.0)  # Default crypto price
+        stop_loss = opportunity.get("stop_loss", entry_price * 0.95)
+        target_price = opportunity.get("target_price", entry_price * 1.15)
+        
+        risk_per_unit = abs(entry_price - stop_loss)
+        max_units = max_position / entry_price
         # CRYPTO RISK - Change 0.03 to increase/decrease risk per crypto trade
         risk_adjusted_units = (max_position * 0.03) / risk_per_unit  # 3% max risk for crypto (more volatile)
         
@@ -263,26 +275,32 @@ class PortfolioManager:
         if position_units <= 0:
             return None
         
-        position_value = position_units * opportunity["entry_price"]
+        position_value = position_units * entry_price
         max_risk = position_units * risk_per_unit
-        risk_reward = abs(opportunity["target_price"] - opportunity["entry_price"]) / risk_per_unit
+        risk_reward = abs(target_price - entry_price) / risk_per_unit
         
-        if opportunity.technical_signals[0].signal_type == 'buy':
-            trade_type = 'crypto_buy'
-        else:
-            trade_type = 'crypto_sell'
+        # Handle dict structure for crypto
+        symbol = opportunity.get("symbol", "UNKNOWN")
+        strategy = opportunity.get("strategy", "Crypto Analysis")
+        confidence = opportunity.get("confidence_score", opportunity.get("ai_score", 0.5))
+        
+        # Determine trade type
+        trade_type = 'crypto_buy'  # Default
+        if "technical_signals" in opportunity and opportunity["technical_signals"]:
+            if hasattr(opportunity["technical_signals"][0], 'signal_type'):
+                trade_type = 'crypto_buy' if opportunity["technical_signals"][0].signal_type == 'buy' else 'crypto_sell'
         
         return TradeSuggestion(
-            symbol=opportunity["symbol"],
+            symbol=symbol,
             trade_type=trade_type,
-            entry_price=opportunity["entry_price"],
-            target_price=opportunity["target_price"],
-            stop_loss=opportunity["stop_loss"],
+            entry_price=entry_price,
+            target_price=target_price,
+            stop_loss=stop_loss,
             position_size=position_value,
             risk_reward_ratio=risk_reward,
             max_risk=max_risk,
-            strategy=f"Crypto {opportunity.strategy}",
-            confidence=opportunity["confidence_score"]
+            strategy=f"Crypto {strategy}",
+            confidence=confidence
         )
     
     def calculate_portfolio_risk(self, suggestions: List[TradeSuggestion]) -> Dict[str, float]:

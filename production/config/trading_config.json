@@ -1,0 +1,83 @@
+{
+  "trading": {
+    "capital_allocation": {
+      "use_percentage": 100,
+      "max_position_size": 0.4,
+      "min_trade_amount": 5
+    },
+    "risk_management": {
+      "stop_loss_percent": 5.0,
+      "take_profit_percent": 10.0,
+      "trailing_stop_percent": 3.0,
+      "max_daily_loss": 100,
+      "max_positions": 2,
+      "crypto_stop_loss_percent": 8.0,
+      "crypto_take_profit_percent": 16.0,
+      "crypto_trailing_stop_percent": 3.0
+    },
+    "strategy": {
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "volume_threshold": 1.5,
+      "momentum_lookback": 20,
+      "min_price": 5.0,
+      "max_price": 500.0,
+      "min_confidence": 0.75
+    },
+    "sentiment": {
+      "weight": 0.3,
+      "skip_threshold": -0.8,
+      "bias_threshold": 0.5
+    }
+  },
+  "market": {
+    "premarket_start": "04:00",
+    "premarket_end": "09:30",
+    "trading_hours": {
+      "start": "09:30",
+      "end": "16:00"
+    },
+    "scan_universe": [
+      "AMD", "SOL/USD"
+    ]
+  },
+  "apis": {
+    "alpaca": {
+      "base_url": "https://api.alpaca.markets",
+      "data_url": "https://data.alpaca.markets"
+    },
+    "news": {
+      "provider": "alpaca",
+      "backup_provider": "newsapi"
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "trade_log_file": "logs/trades.csv",
+    "performance_log_file": "logs/performance.csv",
+    "debug_log_file": "logs/debug.log"
+  },
+  "notifications": {
+    "email": {
+      "enabled": false,
+      "smtp_server": "",
+      "smtp_port": 587,
+      "username": "",
+      "recipients": []
+    },
+    "sms": {
+      "enabled": false,
+      "provider": "twilio",
+      "account_sid": "",
+      "auth_token": "",
+      "from_phone": "",
+      "to_phone": ""
+    }
+  },
+  "bot_control": {
+    "enabled": true,
+    "auto_start": true,
+    "scan_interval_seconds": 30,
+    "max_concurrent_trades": 2
+  }
+}

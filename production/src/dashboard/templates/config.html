@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - Trading Bot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .nav {
+            background: white;
+            padding: 0 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #4a5568;
+            padding: 1rem 0;
+            display: block;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover, .nav a.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .form-group input {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-info {
+            background: #ebf8ff;
+            color: #2b6cb0;
+            border: 1px solid #bee3f8;
+        }
+        
+        .config-section {
+            margin-bottom: 2rem;
+        }
+        
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .readonly {
+            background: #f7fafc;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🤖 Autonomous Trading Bot</h1>
+    </header>
+    
+    <nav class="nav">
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/trades">Trade History</a></li>
+            <li><a href="/config" class="active">Configuration</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="alert alert-info">
+            <strong>⚠️ Configuration Changes:</strong> Some changes require restarting the bot to take effect.
+        </div>
+        
+        <div class="config-grid">
+            <!-- Trading Configuration -->
+            <div class="card">
+                <h2>💰 Capital Allocation</h2>
+                <div class="form-group">
+                    <label>Use Percentage of Balance:</label>
+                    <input type="number" value="{{ config.trading.capital_allocation.use_percentage }}" min="1" max="100" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Max Position Size (%):</label>
+                    <input type="number" value="{{ config.trading.capital_allocation.max_position_size * 100 }}" min="1" max="50" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Min Trade Amount ($):</label>
+                    <input type="number" value="{{ config.trading.capital_allocation.min_trade_amount }}" min="1" step="1">
+                </div>
+                <button class="btn">Update Capital Settings</button>
+            </div>
+            
+            <!-- Risk Management -->
+            <div class="card">
+                <h2>🛡️ Risk Management</h2>
+                <div class="form-group">
+                    <label>Stop Loss (%):</label>
+                    <input type="number" value="{{ config.trading.risk_management.stop_loss_percent }}" min="1" max="20" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label>Take Profit (%):</label>
+                    <input type="number" value="{{ config.trading.risk_management.take_profit_percent }}" min="5" max="50" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Trailing Stop (%):</label>
+                    <input type="number" value="{{ config.trading.risk_management.trailing_stop_percent }}" min="1" max="10" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label>Max Daily Loss ($):</label>
+                    <input type="number" value="{{ config.trading.risk_management.max_daily_loss }}" min="10" step="10">
+                </div>
+                <div class="form-group">
+                    <label>Max Positions:</label>
+                    <input type="number" value="{{ config.trading.risk_management.max_positions }}" min="1" max="20" step="1">
+                </div>
+                <button class="btn">Update Risk Settings</button>
+            </div>
+            
+            <!-- Strategy Parameters -->
+            <div class="card">
+                <h2>📊 Strategy Parameters</h2>
+                <div class="form-group">
+                    <label>RSI Oversold:</label>
+                    <input type="number" value="{{ config.trading.strategy.rsi_oversold }}" min="10" max="40" step="1">
+                </div>
+                <div class="form-group">
+                    <label>RSI Overbought:</label>
+                    <input type="number" value="{{ config.trading.strategy.rsi_overbought }}" min="60" max="90" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Volume Threshold:</label>
+                    <input type="number" value="{{ config.trading.strategy.volume_threshold }}" min="1" max="5" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Min Price ($):</label>
+                    <input type="number" value="{{ config.trading.strategy.min_price }}" min="1" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Max Price ($):</label>
+                    <input type="number" value="{{ config.trading.strategy.max_price }}" min="50" step="50">
+                </div>
+                <button class="btn">Update Strategy Settings</button>
+            </div>
+            
+            <!-- Sentiment Analysis -->
+            <div class="card">
+                <h2>📰 Sentiment Analysis</h2>
+                <div class="form-group">
+                    <label>Sentiment Weight:</label>
+                    <input type="number" value="{{ config.trading.sentiment.weight }}" min="0" max="1" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Skip Threshold:</label>
+                    <input type="number" value="{{ config.trading.sentiment.skip_threshold }}" min="-1" max="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Bias Threshold:</label>
+                    <input type="number" value="{{ config.trading.sentiment.bias_threshold }}" min="0" max="1" step="0.1">
+                </div>
+                <button class="btn">Update Sentiment Settings</button>
+            </div>
+            
+            <!-- Market Configuration -->
+            <div class="card">
+                <h2>🏛️ Market Settings</h2>
+                <div class="form-group">
+                    <label>Pre-market Start:</label>
+                    <input type="time" value="{{ config.market.premarket_start }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Market Open:</label>
+                    <input type="time" value="{{ config.market.trading_hours.start }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Market Close:</label>
+                    <input type="time" value="{{ config.market.trading_hours.end }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Scan Universe Size:</label>
+                    <input type="number" value="{{ config.market.scan_universe | length }}" class="readonly" readonly>
+                </div>
+            </div>
+            
+            <!-- Logging Configuration -->
+            <div class="card">
+                <h2>📝 Logging</h2>
+                <div class="form-group">
+                    <label>Log Level:</label>
+                    <input type="text" value="{{ config.logging.level }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Trade Log File:</label>
+                    <input type="text" value="{{ config.logging.trade_log_file }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Performance Log File:</label>
+                    <input type="text" value="{{ config.logging.performance_log_file }}" class="readonly" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Debug Log File:</label>
+                    <input type="text" value="{{ config.logging.debug_log_file }}" class="readonly" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add functionality to update settings
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Configuration update functionality will be implemented soon.\nFor now, edit config/trading_config.json directly.');
+            });
+        });
+    </script>
+</body>
+</html>

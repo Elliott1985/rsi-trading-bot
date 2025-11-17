@@ -1,0 +1,39 @@
+# Enhanced Trading Bot Dependencies
+# Core Dependencies
+alpaca-py>=0.8.0
+pandas>=2.0.0
+numpy>=1.24.0
+requests>=2.30.0
+python-dateutil>=2.8.0
+
+# Technical Analysis
+TA-Lib>=0.4.25
+yfinance>=0.2.18
+
+# Machine Learning & AI
+torch>=2.0.0
+transformers>=4.30.0
+scikit-learn>=1.3.0
+scipy>=1.10.0
+
+# Web Dashboard
+Flask>=2.3.0
+Flask-CORS>=4.0.0
+
+# Notifications
+twilio>=8.5.0
+
+# Database & Storage
+sqlite3  # Built-in with Python
+
+# Utilities
+python-dotenv>=1.0.0
+schedule>=1.2.0
+psutil>=5.9.0
+colorama>=0.4.6
+
+# Development & Testing (optional)
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.7.0
+flake8>=6.0.0

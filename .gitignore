@@ -62,9 +62,13 @@ venv.bak/
 # API Keys and Secrets
 config/api_keys.env
 config/.env
+api_keys.env
+*.env
 *.key
 *.pem
 secrets/
+etrade_tokens_prod.json
+etrade_tokens_*.json
 
 # Trading Data
 data/
@@ -122,3 +126,6 @@ trades.json
 positions.json
 market_data_cache/
 backtest_results/
+*.log
+*_orders_*.json
+bot_status.json

@@ -1,0 +1,162 @@
+{
+  "timestamp": "2025-10-18T07:19:20.132186",
+  "overall_performance": {
+    "date": "2025-10-18",
+    "total_trades": 17,
+    "winning_trades": 7,
+    "losing_trades": 8,
+    "win_rate": 0.4117647058823529,
+    "total_pnl": -0.112289,
+    "max_profit": 0.02818,
+    "max_loss": -0.071561,
+    "avg_profit": 0.009534428571428572,
+    "avg_loss": -0.022378750000000003,
+    "profit_factor": 0.37279226945204713,
+    "sharpe_ratio": -4.511468576171129,
+    "max_drawdown": -0.140777,
+    "portfolio_value": 0.0
+  },
+  "top_symbols": [
+    {
+      "symbol": "SOLUSD",
+      "total_trades": 17,
+      "winning_trades": 7,
+      "win_rate": 0.4117647058823529,
+      "total_pnl": -0.112289,
+      "avg_hold_time": 60.0,
+      "best_trade": 0.02818,
+      "worst_trade": -0.071561,
+      "success_score": 0.299935856
+    }
+  ],
+  "worst_symbols": [
+    {
+      "symbol": "SOLUSD",
+      "total_trades": 17,
+      "winning_trades": 7,
+      "win_rate": 0.4117647058823529,
+      "total_pnl": -0.112289,
+      "avg_hold_time": 60.0,
+      "best_trade": 0.02818,
+      "worst_trade": -0.071561,
+      "success_score": 0.299935856
+    }
+  ],
+  "strategy_effectiveness": {
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": 0.0,
+      "total_trades": 1,
+      "effectiveness_score": 0.0
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.04905,
+      "total_trades": 1,
+      "effectiveness_score": -0.000981
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.008959,
+      "total_trades": 1,
+      "effectiveness_score": -0.00017918
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.005236,
+      "total_trades": 1,
+      "effectiveness_score": -0.00010472
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.018602,
+      "total_trades": 1,
+      "effectiveness_score": -0.00037204
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.02818,
+      "total_trades": 1,
+      "effectiveness_score": 0.7005636
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.005522,
+      "total_trades": 1,
+      "effectiveness_score": 0.70011044
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.001914,
+      "total_trades": 1,
+      "effectiveness_score": -3.828e-05
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.002535,
+      "total_trades": 1,
+      "effectiveness_score": 0.7000506999999999
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.002016,
+      "total_trades": 1,
+      "effectiveness_score": 0.7000403199999999
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.01252,
+      "total_trades": 1,
+      "effectiveness_score": -0.0002504
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.011188,
+      "total_trades": 1,
+      "effectiveness_score": -0.00022376
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": -0.071561,
+      "total_trades": 1,
+      "effectiveness_score": -0.00143122
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.012276,
+      "total_trades": 1,
+      "effectiveness_score": 0.70024552
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.007318,
+      "total_trades": 1,
+      "effectiveness_score": 0.70014636
+    },
+    "NaN": {
+      "win_rate": 0.0,
+      "avg_pnl": 0.0,
+      "total_trades": 1,
+      "effectiveness_score": 0.0
+    },
+    "NaN": {
+      "win_rate": 1.0,
+      "avg_pnl": 0.008894,
+      "total_trades": 1,
+      "effectiveness_score": 0.7001778799999999
+    }
+  },
+  "risk_analysis": {
+    "max_drawdown": -0.140777,
+    "avg_drawdown": -0.0780144375,
+    "drawdown_periods": 16,
+    "max_loss_streak": 4,
+    "sharpe_ratio": -0.2841958071483683,
+    "large_loss_count": 0,
+    "large_loss_percent": 0.0
+  },
+  "recommendations": [
+    "Focus on top performers: SOLUSD",
+    "Avoid or reduce exposure to: SOLUSD"
+  ]
+}
