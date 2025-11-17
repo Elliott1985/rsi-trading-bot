@@ -135,12 +135,33 @@ python app.py                     # Full trading simulation
 ```
 
 ### **Web Dashboard** (Recommended)
+
+**Option 1: Streamlit Dashboard (Development/Analysis)**
 ```bash
 streamlit run src/dashboard/trading_dashboard.py
 # Access at: http://localhost:8501
 ```
 
-### **Live Trading** (After API setup)
+**Option 2: Flask Production Dashboard (Live Trading)**
+```bash
+cd production
+python3 run_bot.py --mode dashboard
+# Access at: http://localhost:5000
+```
+
+The Flask dashboard is integrated with the Alpaca bot and shows real-time positions, orders, and performance metrics.
+
+### **Live Trading with Alpaca** (After API setup)
+
+**Production Bot (Recommended)**
+```bash
+cd production
+# Make sure api_keys.env has your Alpaca keys
+python3 run_bot.py --mode bot
+# Bot will scan markets and execute trades automatically
+```
+
+**Legacy Simulation**
 ```bash
 # Edit config/api_keys.env with real keys
 # Set SIMULATION_MODE=false in api_keys.env
@@ -327,25 +348,23 @@ Automated PDF reports include:
 
 ## 🎛️ **Web Dashboard Features**
 
-Access the dashboard at `http://localhost:8501`
+### **Streamlit Dashboard** (`http://localhost:8501`)
+Best for analysis and strategy development:
+- Market analysis with RSI, MACD, sentiment indicators
+- Historical trade performance charts
+- AI confidence score visualization
+- Portfolio analytics and risk breakdown
+- Interactive backtesting interface
 
-### **Real-time Monitoring**
-- Live portfolio performance and P&L
-- Current AI confidence scores  
-- Active trade tracking with stop/target levels
-- Market analysis with sentiment indicators
-
-### **Interactive Controls**
-- Start/stop trading engine
-- Adjust confidence thresholds
-- Emergency position exit
-- Export trade history
-
-### **Analytics & Reporting**
-- Performance charts and metrics
-- Trade analysis by symbol/strategy
-- Risk breakdown and correlation analysis
-- System health monitoring
+### **Flask Production Dashboard** (`http://localhost:5000`)
+Best for live trading with Alpaca:
+- **Real-time Portfolio**: Current value, buying power, cash, equity
+- **Active Positions**: Live positions with unrealized P&L
+- **Recent Orders**: Order history and execution status
+- **Performance Metrics**: Win rate, total P&L, profit factor, Sharpe ratio
+- **Symbol Rankings**: Track which stocks perform best
+- **Configuration Management**: Adjust trading parameters on-the-fly
+- **Trade Logging**: Complete CSV export of all trades
 
 ---
 
